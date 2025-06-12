@@ -1,5 +1,6 @@
 package com.example.newsfeed.exception;
 
+import com.example.newsfeed.exception.login.LoginFailException;
 import com.example.newsfeed.exception.member.DuplicateEmailException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +24,13 @@ public class GlobalExeceptionHandler {
         return ResponseEntity.badRequest().body(errorMessage);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+
     //이메일이나 비밀번호 틀릴때 예외처리
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+    @ExceptionHandler(LoginFailException.class)
+    public ResponseEntity<String> handleLoginFail(LoginFailException ex) {
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)  // 400 Bad Request
+                .status(HttpStatus.UNAUTHORIZED) // 401 Unauthorized
                 .body(ex.getMessage());
     }
 }
+
